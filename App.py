@@ -3,7 +3,7 @@ import speech_recognition as sr
 import random
 import os
 import time
-import modules
+import commands
 
 
 def recognize_speech_from_mic(recognizer, microphone):
@@ -51,37 +51,31 @@ def beep_low():
 if __name__ == "__main__":
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
-
-    speak_to_speaker('Hi, What are you looking for')
-
+    os.system('clear')
+    speak_to_speaker('Welcome to Voice commmand shell')
+    speak_to_speaker('How can I help you')
     while (1):
         response = recognize_speech_from_mic(recognizer, microphone)
 
         if response["error"]:
-            print("ERROR: {}".format(response["error"]))
+            print("Sorry, we are unable to recognize you. Please say command again")
             continue
 
         text = str(format(response["transcription"])).lower()
         print("You said:" + text)
 
-        if ('hello' in text):
-            beep_high()
+        # if ('hello' in text):
+        #     beep_high()
 
-           while (1):
-                response = recognize_speech_from_mic(recognizer, microphone)
-                if response["error"]:
-                    print("ERROR: {}".format(response["error"]))
-                    continue
+        while (1):
+            response = recognize_speech_from_mic(recognizer, microphone)
+            if response["error"]:
+                print("Sorry, we are unable to recognize you. Please say command again")
+                continue
 
-                text = str(format(response["transcription"])).lower()
-                print("You said:" + text)
-                modules.runCommand(text)
-                break
-
-            beep_low()
-
-        if 'exit' in text:
-            speak_to_speaker("Good Bye")
-            speak_to_speaker("Have a nice day")
-            print("Good Bye")
-            break
+            text = str(format(response["transcription"])).lower()
+            print("You said:" + text)
+            commands.runCommand(text)
+            # break
+        # break
+        # beep_low()
