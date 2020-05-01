@@ -1,9 +1,10 @@
-from gtts import gTTS 
+from gtts import gTTS
 import speech_recognition as sr
 import random
 import os
 import time
 import modules
+
 
 def recognize_speech_from_mic(recognizer, microphone):
     if not isinstance(recognizer, sr.Recognizer):
@@ -32,22 +33,26 @@ def recognize_speech_from_mic(recognizer, microphone):
 
     return response
 
+
 def speak_to_speaker(text):
     myobj = gTTS(text=text, lang='en', slow=False)
     myobj.save("tts.mp3")
     os.system("mpg321 -q tts.mp3")
 
+
 def beep_high():
-    os.system("mpg321 beep_hi.mp3")
+    os.system("mpg321 -q beep_hi.mp3")
+
 
 def beep_low():
     os.system("mpg321 -q beep_lo.mp3")
+
 
 if __name__ == "__main__":
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
 
-    speak_to_speaker('Hi, What are you lookin for')
+    speak_to_speaker('Hi, What are you looking for')
 
     while (1):
         response = recognize_speech_from_mic(recognizer, microphone)
@@ -62,7 +67,7 @@ if __name__ == "__main__":
         if ('hello' in text):
             beep_high()
 
-            while (1):
+           while (1):
                 response = recognize_speech_from_mic(recognizer, microphone)
                 if response["error"]:
                     print("ERROR: {}".format(response["error"]))
