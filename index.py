@@ -39,10 +39,8 @@ def speak_to_speaker(text):
     myobj.save("tts.mp3")
     os.system("mpg321 -q tts.mp3")
 
-
 def beep_high():
     os.system("mpg321 -q beep_hi.mp3")
-
 
 def beep_low():
     os.system("mpg321 -q beep_lo.mp3")
@@ -53,7 +51,7 @@ if __name__ == "__main__":
     microphone = sr.Microphone()
     os.system('clear')
     speak_to_speaker('Welcome to Voice commmand shell')
-    speak_to_speaker('How can I help you')
+    speak_to_speaker('How can I help you?')
     while (1):
         response = recognize_speech_from_mic(recognizer, microphone)
 
