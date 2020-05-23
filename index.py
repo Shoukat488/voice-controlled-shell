@@ -6,32 +6,29 @@ import time
 import commands
 
 
-def recognize_speech_from_mic(recognizer, microphone):
-    if not isinstance(recognizer, sr.Recognizer):
-        raise TypeError("`recognizer` must be `Recognizer` instance")
+def recognize_speech():
+    rcgn = sr.Recognizer()
+    mic = sr.Microphone()
 
-    if not isinstance(microphone, sr.Microphone):
-        raise TypeError("`microphone` must be `Microphone` instance")
+    with mic as source:
+        rcgn.adjust_for_ambient_noise(source)
+        audio = rcgn.listen(source)
 
-    with microphone as source:
-        recognizer.adjust_for_ambient_noise(source)
-        audio = recognizer.listen(source)
-
-    response = {
+    result = {
         "success": True,
         "error": None,
         "transcription": None
     }
 
     try:
-        response["transcription"] = recognizer.recognize_google(audio)
+        result["transcription"] = rcgn.recognize_google(audio)
     except sr.RequestError:
-        response["success"] = False
-        response["error"] = "API unavailable"
+        result["success"] = False
+        result["error"] = "API unavailable"
     except sr.UnknownValueError:
-        response["error"] = "Unable to recognize speech"
+        result["error"] = "Unable to recognize speech"
 
-    return response
+    return result
 
 
 def speak_to_speaker(text):
@@ -52,8 +49,9 @@ if __name__ == "__main__":
     os.system('clear')
     speak_to_speaker('Welcome to Voice commmand shell')
     speak_to_speaker('How can I help you?')
+    print('How can I help you?')
     while (1):
-        response = recognize_speech_from_mic(recognizer, microphone)
+        response = recognize_speech()
 
         if response["error"]:
             print("Sorry, we are unable to recognize you. Please say command again")
@@ -66,7 +64,7 @@ if __name__ == "__main__":
         #     beep_high()
 
         while (1):
-            response = recognize_speech_from_mic(recognizer, microphone)
+            response = recognize_speech()
             if response["error"]:
                 print("Sorry, we are unable to recognize you. Please say command again")
                 continue

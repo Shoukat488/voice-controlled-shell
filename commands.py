@@ -2,10 +2,13 @@ import os
 import subprocess
 import index
 import speech_recognition as sr
+import webbrowser as wb
+
 
 def runCommand(text):
     s = ""
     ss = ""
+
 
     if "shutdown" in text:
         os.system("shutdown -h now")
@@ -15,6 +18,18 @@ def runCommand(text):
         index.speak_to_speaker("Have a nice day")
         print("Good Bye")
         exit("Thank you")
+    elif 'youtube' in text:
+        index.speak_to_speaker('What you want to search on YouTube')
+        response = index.recognize_speech()
+        query = str(format(response["transcription"])).lower()
+        url = 'https://www.youtube.com/results?search_query='+query
+        wb.open_new_tab(url)
+    elif 'google' in text:
+        index.speak_to_speaker('What you want to search on Google')
+        response = index.recognize_speech()
+        query = str(format(response["transcription"])).lower()
+        url = 'https://www.google.com/search?ei=aTLIXq3tGszCgweRtZ_IDw&q='+query
+        wb.open_new_tab(url)
     elif "list files" in text:
         s = str(subprocess.check_output(['ls']))
         print(s)
@@ -62,7 +77,6 @@ def runCommand(text):
         s = str(subprocess.check_output(['whoami']))
         print(s)
         index.speak_to_speaker("The user name is " + s)
-
 
 
     elif "what is the day" in text:
