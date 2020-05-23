@@ -17,7 +17,7 @@ def recognize_speech():
     result = {
         "success": True,
         "error": None,
-        "transcription": None
+        "text": None
     }
 
     try:
@@ -30,48 +30,40 @@ def recognize_speech():
 
     return result
 
-
-def speak_to_speaker(text):
+def text_to_speak(text):
     myobj = gTTS(text=text, lang='en', slow=False)
-    myobj.save("tts.mp3")
-    os.system("mpg321 -q tts.mp3")
+    myobj.save("text_to_voice.mp3")
+    os.system("mpg321 -q text_to_voice.mp3")
+
 
 def beep_high():
     os.system("mpg321 -q beep_hi.mp3")
+
 
 def beep_low():
     os.system("mpg321 -q beep_lo.mp3")
 
 
 if __name__ == "__main__":
-    recognizer = sr.Recognizer()
-    microphone = sr.Microphone()
     os.system('clear')
-    speak_to_speaker('Welcome to Voice commmand shell')
-    speak_to_speaker('How can I help you?')
-    print('How can I help you?')
+    print('Welcome to Voice commmand shell.\n How can I help you? ')
+    text_to_speak('Welcome to Voice commmand shell, How can I help you? ')
     while (1):
         response = recognize_speech()
 
         if response["error"]:
-            print("Sorry, we are unable to recognize you. Please say command again")
+            print("Sorry, we can't recognize you, Please try again")
             continue
 
         text = str(format(response["transcription"])).lower()
         print("You said:" + text)
 
-        # if ('hello' in text):
-        #     beep_high()
-
         while (1):
             response = recognize_speech()
             if response["error"]:
-                print("Sorry, we are unable to recognize you. Please say command again")
+                print("Sorry, we can't recognize you, Please try again")
                 continue
 
             text = str(format(response["transcription"])).lower()
             print("You said:" + text)
             commands.runCommand(text)
-            # break
-        # break
-        # beep_low()
