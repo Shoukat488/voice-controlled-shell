@@ -14,14 +14,5 @@ while (1):
         continue
 
     text = str(format(response["transcription"])).lower()
-    print("You said:" + text)
-
-    while (1):
-        response = controller.recognize_speech()
-        if response["error"]:
-            print("Sorry, we can't recognize you, Please try again")
-            continue
-
-        text = str(format(response["transcription"])).lower()
-        print("You said:" + text)
-        commands.commandExecute(text)
+    print("You: " + text)
+    commands.commandExecute(text)
