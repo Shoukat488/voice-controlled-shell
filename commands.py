@@ -116,9 +116,8 @@ def commandExecute(text):
                 res["transcription"] + " user already exists.")
             print(res + " user already exists.")
         else:
-            ss = str(subprocess.os.system('sudo adduser ' + name))
-            print(ss)
-            controller.text_to_speak("Sucessfully created the user.")
+            os.system('sudo adduser ' + name)
+            # controller.text_to_speak("Sucessfully created the user.")
 
     elif "delete user" in text:
         controller.text_to_speak("Tell the user name")
@@ -178,9 +177,26 @@ def commandExecute(text):
                 controller.text_to_speak("Unable to delete the file.")
 
     elif "who is your owner" in text:
-        s= "I have been created by the following computer scientists:\n1. Shoukat Ali\n2. Muhammad Awatif Ansari."
-        controller.text_to_speak(s)
+        s = "I have been created by the following computer scientists:\n1. Shoukat Ali\n2. Muhammad Awatif Ansari."
         print(s)
+        controller.text_to_speak(s)
+    elif "ip address" in text:
+        s = str(subprocess.os.system('ip addr'))
+        print(s)
+        controller.text_to_speak('ip address is present on your screen')
+    elif "kill" in text:
+        controller.text_to_speak('Type process id')
+        print('Type process id: \n')
+        res = controller.recognize_speech()
+        res1 = res['transcription'] 
+        try:
+            os.system('sudo kill ' + res1)
+        except:
+            print('unable to kill')
+        # else:
+        #     print('unable to kill prcess')
+        #     controller.text_to_speak('unable to kill prcess')
+
     elif "clear" in text:
         os.system('clear')
     else:
