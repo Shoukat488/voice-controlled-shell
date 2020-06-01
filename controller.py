@@ -10,21 +10,21 @@ def recognize_speech():
         rcgn.adjust_for_ambient_noise(source)
         audio = rcgn.listen(source)
 
-    result = {
+    response = {
         "success": True,
         "error": None,
         "text": None
     }
 
     try:
-        result["transcription"] = rcgn.recognize_google(audio)
+        response["transcription"] = rcgn.recognize_google(audio)
     except sr.RequestError:
-        result["success"] = False
-        result["error"] = "API unavailable"
+        response["success"] = False
+        response["error"] = "API unavailable"
     except sr.UnknownValueError:
-        result["error"] = "Unable to recognize speech"
+        response["error"] = "Unable to recognize speech"
 
-    return result
+    return response
 
 
 def text_to_speak(text):

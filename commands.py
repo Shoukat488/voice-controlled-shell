@@ -4,6 +4,7 @@ import speech_recognition as sr
 import webbrowser as wb
 import controller
 
+
 def commandExecute(text):
     s = ""
     ss = ""
@@ -14,7 +15,7 @@ def commandExecute(text):
     elif 'exit' in text:
         controller.text_to_speak("Good Bye, Have a nice day")
         print("Good Bye")
-        exit("Thank you")
+        exit("Have a nice day")
     elif 'youtube' in text:
         controller.text_to_speak('What you want to search on YouTube')
         response = controller.recognize_speech()
@@ -41,44 +42,44 @@ def commandExecute(text):
         controller.text_to_speak("All files present in the directory " + str(
             subprocess.check_output(['pwd'])) + " are displayed on terminal")
 
-    elif "list formated files" in text or "list file permissions" in text:
-        s = str(subprocess.os.system(['ls', '-l']))
+    elif "list formatted files" in text or "list file permissions" in text:
+        s = str(subprocess.os.system('ls -l'))
         print(s)
         controller.text_to_speak("All files present in the directory " + str(
-            subprocess.os.system(['pwd'])) + " are displayed on terminal with permissions.")
+            subprocess.check_output('pwd')) + " are displayed on terminal with permissions.")
 
     elif "list hidden files" in text:
-        s = str(subprocess.check_output(['ls', '-a']))
+        s = str(subprocess.os.system('ls -a'))
         print(s)
         controller.text_to_speak("All hidden files present in the directory " + str(
             subprocess.check_output(['pwd'])) + " are displayed on terminal.")
     elif "current working directory" in text or "where i am standing" in text:
-        s = str(subprocess.check_output(['pwd']))
+        s = str(subprocess.os.system(['pwd']))
         print(s)
 
     elif "what is the date today" in text:
-        s = str(subprocess.check_output(['date', '+%c']))
+        s = str(subprocess.os.system('date "+%Y/%m/%d"'))
         print(s)
         controller.text_to_speak(s)
 
     elif "what is the day today" in text:
-        s = str(subprocess.check_output(['date', '+%A']))
+        s = str(subprocess.os.system('date "+%A" '))
         print(s)
         controller.text_to_speak(s)
 
     elif "what is the time" in text:
-        s = str(subprocess.check_output(['date', '+%T']))
+        s = str(subprocess.os.system('date "+%T" '))
         print(s)
         controller.text_to_speak(s)
 
     elif "calendar" in text:
-        s = str(subprocess.check_output(['cal']))
+        s = str(subprocess.os.system('cal'))
         print(s)
         controller.text_to_speak("The Calendar for the " + str(subprocess.check_output(['date', '+%B'])) + " month and " + str(
             subprocess.check_output(['date', '+%Y'])) + " year is printed on the screen.")
 
     elif "what is the username" in text:
-        s = str(subprocess.check_output(['whoami']))
+        s = str(subprocess.os.system('whoami'))
         print(s)
         controller.text_to_speak("The user name is " + s)
 
@@ -101,7 +102,7 @@ def commandExecute(text):
         controller.text_to_speak("Type your password first")
 
     elif "list users" in text or "list all users" in text or "list user" in text:
-        s = str(os.subprocess.check_output["ls", "/home"])
+        s = str(subprocess.os.system("ls /home"))
         print(s)
         controller.text_to_speak("List of users are " + s)
 
@@ -115,21 +116,21 @@ def commandExecute(text):
                 res["transcription"] + " user already exists.")
             print(res + " user already exists.")
         else:
-            ss = str(subprocess.check_output(['adduser', name]))
+            ss = str(subprocess.os.system('sudo adduser ' + name))
             print(ss)
             controller.text_to_speak("Sucessfully created the user.")
 
     elif "delete user" in text:
         controller.text_to_speak("Tell the user name")
         res = controller.recognize_speech()
-        name = str(res["transcription"])
+        name = 'test'
         r = "/home" + name
         if os.path.exists(r):
             controller.text_to_speak(
                 "Are you sure you want to delete " + res + " ?")
             res1 = controller.recognize_speech()
             if "yes" in res1:
-                ss = str(subprocess.check_output(['deluser', res]))
+                ss = str(subprocess.os.system('deluser ' + res))
                 print(ss)
                 controller.text_to_speak("Sucessfully deleted the user.")
             else:
@@ -148,8 +149,8 @@ def commandExecute(text):
                 "Are you sure you want to permanent delete " + res + " ?")
             res1 = controller.recognize_speech()
             if "yes" in res1["transcription"]:
-                ss = str(subprocess.check_output(
-                    ['deluser', '-remove-home', res]))
+                ss = str(subprocess.os.system(
+                    'deluser -remove-home ' + res))
                 print(ss)
                 controller.text_to_speak(
                     "Sucessfully permanent deleted the user.")
@@ -168,18 +169,20 @@ def commandExecute(text):
             controller.text_to_speak(
                 "Are you sure you want to delete " + res + " ?")
             res1 = controller.recognize_speech()
-            if "yes" in res1["transcription"]:
-                ss = str(subprocess.check_output(['rm', r]))
+            if "yes" in res1["transcription"] or 'y' in res1["transcription"]:
+                ss = str(subprocess.os.system('rm '+r))
                 print(ss)
                 controller.text_to_speak("Sucessfully deleted the user.")
             else:
                 print("You refused to delete the file.")
                 controller.text_to_speak("Unable to delete the file.")
 
-    elif "who created you" in text:
-        s = "Following scientists created me:\n1. Saad Ismail\n2. Mehdi Raza Rajani\n3. Hassan Berry."
+    elif "who is your owner" in text:
+        s= "I have been created by the following computer scientists:\n1. Shoukat Ali\n2. Muhammad Awatif Ansari."
         controller.text_to_speak(s)
         print(s)
+    elif "clear" in text:
+        os.system('clear')
     else:
-        print("No such command exist.")
-        controller.text_to_speak("No such command exist.")
+        print("Such command doesn't exist.")
+        controller.text_to_speak("Such command doesn't exist.")
