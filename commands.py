@@ -109,8 +109,15 @@ def commandExecute(text):
     elif "add user for login" in text:
         controller.text_to_speak("Tell the user name")
         res = controller.recognize_speech()
+        while(True):
+            res = controller.recognize_speech()
+            if res['error']:
+                print(res['error'], ' \n')
+                continue
+            else:
+                break
         name = str(res["transcription"])
-        r = "/home" + res["transcription"]
+        r = "/home/" + res["transcription"]
         if os.path.exists(r):
             controller.text_to_speak(
                 res["transcription"] + " user already exists.")
@@ -119,69 +126,85 @@ def commandExecute(text):
             os.system('sudo adduser ' + name)
             controller.text_to_speak("Sucessfully created the user.")
 
-    elif "delete user" in text:
-        controller.text_to_speak("Tell the user name")
-        res = controller.recognize_speech()
-        if res['error']:
-            print(res['error'],' \n')
-        else:
-            name = res['transcription']
-            print(name)
-            r = "/home" + name
-            if os.path.exists(r):
-                controller.text_to_speak(
-                    "Are you sure you want to delete " + name + " ?")
-                res1 = controller.recognize_speech()
-                if "yes" in res1['transcription']:
-                    os.system('sudo deluser ' + name)
-                    # controller.text_to_speak("Sucessfully deleted the user.")
-                else:
-                    print("You refused to delete the file.")
-                    controller.text_to_speak("Unable to delete the file.")
-            else:
-                controller.text_to_speak(name + " user does not exists.")
-                print(res + " user does not exists.")
-
     elif "permanent delete user" in text:
         controller.text_to_speak("Tell the user name")
         res = controller.recognize_speech()
-        if res['error']:
-            print(res['error'],' \n')
-        else:
-            r = "/home" + res["transcription"]
-            if os.path.exists(r):
-                controller.text_to_speak(
-                    "Are you sure you want to permanent delete " + res + " ?")
-                res1 = controller.recognize_speech()
-                if "yes" in res1["transcription"]:
-                    os.system(
-                        'deluser -remove-home ' + res)
-                    controller.text_to_speak(
-                        "Sucessfully permanent deleted the user.")
-                else:
-                    print("You refused to permanent delete the file.")
-                    controller.text_to_speak("Unable to delete the file.")
+        while(True):
+            res = controller.recognize_speech()
+            if res['error']:
+                print(res['error'], ' \n')
+                continue
             else:
-                controller.text_to_speak(res + " user does not exists.")
-                print(res + " user does not exists.")
+                break
+        name = res['transcription']
+        r = "/home/" + res["transcription"]
+        if os.path.exists(r):
+            # controller.text_to_speak(
+            #     "Are you sure you want to permanent delete " + name + " ?")
+            # res1 = controller.recognize_speech()
+            # if "yes" in res1["transcription"]:
+            os.system(
+                'sudo deluser -remove-home ' + name)
+            # controller.text_to_speak(
+            #     "Sucessfully permanent deleted the user.")
+            # else:
+            #     print("You refused to permanent delete the file.")
+            #     controller.text_to_speak("Unable to delete the file.")
+        else:
+            controller.text_to_speak(name + " user does not exists.")
+            print(res + " user does not exists.")
+
+    elif "delete user" in text:
+        controller.text_to_speak("Tell the user name")
+        res = controller.recognize_speech()
+        while(True):
+            res = controller.recognize_speech()
+            if res['error']:
+                print(res['error'], ' \n')
+                continue
+            else:
+                break
+
+        name = res['transcription']
+        print(name)
+        r = "/home/" + name
+        if os.path.exists(r):
+            # controller.text_to_speak(
+            #     "Are you sure you want to delete " + name + " ?")
+            # res1 = controller.recognize_speech()
+            # if "yes" in res1['transcription']:
+            os.system('sudo deluser ' + name)
+            controller.text_to_speak('User deleted successfully.')
+            # controller.text_to_speak("Sucessfully deleted the user.")
+            # else:
+            #     print("You refused to delete the file.")
+            #     controller.text_to_speak("Unable to delete the file.")
+        else:
+            controller.text_to_speak(name + " user does not exists.")
+            print(res + " user does not exists.")
 
     elif "remove user from home" in text:
         controller.text_to_speak("Tell the user name")
         res = controller.recognize_speech()
-        if res['error']:
-            print(res['error'],' \n')
-        else:
-            r = "/home" + res["transcription"]
-            if os.path.exists(r):
-                controller.text_to_speak(
-                    "Are you sure you want to delete " + res + " ?")
-                res1 = controller.recognize_speech()
-                if "yes" in res1["transcription"] or 'y' in res1["transcription"]:
-                    os.system('rm '+r)
-                    controller.text_to_speak("Sucessfully deleted the user.")
-                else:
-                    print("You refused to delete the file.")
-                    controller.text_to_speak("Unable to delete the file.")
+        while(True):
+            res = controller.recognize_speech()
+            if res['error']:
+                print(res['error'], ' \n')
+                continue
+            else:
+                break
+        name = res['transcription']
+        r = "/home/" + res["transcription"]
+        if os.path.exists(r):
+            controller.text_to_speak(
+                "Are you sure you want to delete " + res + " ?")
+            res1 = controller.recognize_speech()
+            # if "yes" in res1["transcription"] or 'y' in res1["transcription"]:
+            os.system('sudo rm ' + res1)
+            controller.text_to_speak("Sucessfully deleted the user.")
+            # else:
+                # print("You refused to delete the file.")
+                # controller.text_to_speak("Unable to delete the file.")
 
     elif "who is your owner" in text:
         s = "I have been created by the following computer scientists:\n1. Shoukat Ali\n2. Muhammad Awatif Ansari."

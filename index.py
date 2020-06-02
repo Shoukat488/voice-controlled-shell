@@ -6,7 +6,7 @@ import commands
 os.system('clear')
 print('Welcome to Voice commmand shell.\n How can I help you? ')
 controller.text_to_speak('Welcome to Voice commmand shell, How can I help you? ')
-while (1):
+while (True):
     response = controller.recognize_speech()
 
     if response["error"]:
